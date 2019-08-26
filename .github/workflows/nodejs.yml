@@ -1,0 +1,45 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+      run: |
+        npm install -g lerna@3.2.1
+        npm run setup
+        lerna add @pattern-lab/engine-mustache --scope=@pattern-lab/core
+        lerna add @pattern-lab/engine-handlebars --scope=@pattern-lab/core
+        lerna add @pattern-lab/engine-underscore --scope=@pattern-lab/core
+        lerna add @pattern-lab/engine-liquid --scope=@pattern-lab/core
+        lerna add @pattern-lab/engine-twig --scope=@pattern-lab/core
+        lerna add @pattern-lab/engine-react --scope=@pattern-lab/core
+      env:
+        CI: true        
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install, build, and test
+      run: |
+        npm test
+      env:
+        CI: true
