@@ -82,7 +82,7 @@ const watchPatternLabFiles = (
       path.join(
         path.resolve(
           basePath,
-          assetDirectories.source.watchRoot || assetDirectories.source.patterns
+          assetDirectories.source.watch || assetDirectories.source.patterns
         ),
         `/**/*${dotExtension}`
       )
