@@ -80,7 +80,10 @@ const watchPatternLabFiles = (
     .concat(patternlab.engines.getSupportedFileExtensions())
     .map(dotExtension =>
       path.join(
-        path.resolve(basePath, assetDirectories.source.patterns),
+        path.resolve(
+          basePath,
+          assetDirectories.source.watchRoot || assetDirectories.source.patterns
+        ),
         `/**/*${dotExtension}`
       )
     );
